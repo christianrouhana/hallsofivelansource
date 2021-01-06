@@ -29,6 +29,17 @@ orc = Actor(
     inventory=Inventory(capacity=0),
     level=Level(xp_given=35),
 )
+#weak range type
+goblin_archer = Actor(
+    char="a",
+    color=(63,127,63),
+    name="Goblin Archer",
+    ai_cls=RangedEnemy,
+    equipment=Equipment(),
+    fighter=Fighter(hp=5, base_defense=0, base_power=3),
+    inventory=Inventory(capacity=0),
+    level=Level(xp_given=75)
+)
 troll = Actor(
     char="T",
     color=(63,127,63),
@@ -62,7 +73,7 @@ goblin = Actor(
 #low level mid game, big threat early
 drone = Actor(
     char="d",
-    color=(255,255,255),
+    color=(255,153,153),
     name="Eldritch Steel Drone",
     ai_cls=HostileEnemy,
     equipment=Equipment(),
@@ -73,36 +84,26 @@ drone = Actor(
 # mid level mid game
 guardian = Actor(
     char="G",
-    color=(255,255,255),
+    color=(110,190,200),
     name="Eldritch Guardian",
     ai_cls=HostileEnemy,
     equipment=Equipment(),
-    fighter=Fighter(hp=20, base_defense=2, base_power=7),
+    fighter=Fighter(hp=20, base_defense=2, base_power=9),
     inventory=Inventory(capacity=0),
-    level=Level(xp_given = 175)
+    level=Level(xp_given = 195)
 )
 #hope you dont run into this early on
 warden = Actor(
     char="W",
-    color=(255,255,255),
+    color=(255,255,135),
     name="Possessed Warden",
     ai_cls=HostileEnemy,
     equipment=Equipment(),
-    fighter=Fighter(hp=25, base_defense=3, base_power=9),
+    fighter=Fighter(hp=25, base_defense=5, base_power=10),
     inventory=Inventory(capacity=0),
-    level=Level(xp_given=200)
+    level=Level(xp_given=210)
 )
-#weak range type
-goblin_archer = Actor(
-    char="a",
-    color=(63,127,63),
-    name="Goblin Archer",
-    ai_cls=RangedEnemy,
-    equipment=Equipment(),
-    fighter=Fighter(hp=5, base_defense=0, base_power=3),
-    inventory=Inventory(capacity=0),
-    level=Level(xp_given=75)
-)
+
 #strong range type
 beam_soldier = Actor(
     char="b",
@@ -110,20 +111,20 @@ beam_soldier = Actor(
     name="Eldritch Beam Warrior",
     ai_cls=RangedEnemy,
     equipment=Equipment(),
-    fighter=Fighter(hp=20, base_defense=2, base_power=7),
+    fighter=Fighter(hp=20, base_defense=2, base_power=9),
     inventory=Inventory(capacity=0),
-    level=Level(xp_given=200)
+    level=Level(xp_given=210)
 )
 
 corrupted_wizard = Actor(
     char="w",
-    color=(255,255,255),
+    color=(255,0,230),
     name="Wizard, follower of Ivelan",
     ai_cls=RangedEnemy,
     equipment=Equipment(),
     fighter=Fighter(hp=35, base_defense=5, base_power=11),
     inventory=Inventory(capacity=0),
-    level=Level(xp_given=250)
+    level=Level(xp_given=270)
 )
 #evil tank
 enchanted_statue = Actor(
@@ -132,9 +133,9 @@ enchanted_statue = Actor(
     name="Enchanted Statue",
     ai_cls=HostileEnemy,
     equipment=Equipment(),
-    fighter=Fighter(hp=30, base_defense=5, base_power=10),
+    fighter=Fighter(hp=40, base_defense=8, base_power=17),
     inventory=Inventory(capacity=0),
-    level=Level(xp_given=300),
+    level=Level(xp_given=330),
 )
 agent_of_ivelan = Actor(
     char="A",
@@ -142,7 +143,7 @@ agent_of_ivelan = Actor(
     name="Demonic Agent of Ivelan",
     ai_cls=RangedEnemy,
     equipment=Equipment(),
-    fighter=Fighter(hp=45, base_defense=7, base_power=15),
+    fighter=Fighter(hp=45, base_defense=7, base_power=16),
     inventory=Inventory(capacity=0),
     level=Level(xp_given=500),
 )
@@ -152,11 +153,11 @@ monolith = Actor(
     name="Monolith, Incomprehensible Evil",
     ai_cls=HostileEnemy,
     equipment=Equipment(),
-    fighter=Fighter(hp=60, base_defense=10, base_power=18),
+    fighter=Fighter(hp=70, base_defense=12, base_power=25),
     inventory=Inventory(capacity=0),
     level=Level(xp_given=1000),
 )
-"""consumables here goal 20 consumables"""
+"""consumables"""
 health_potion = Item(
     char="!",
     color=(0,160,255),
@@ -174,6 +175,12 @@ super_health_potion = Item(
     color=(0,160,255),
     name="Super Potion",
     consumable=consumable.HealingConsumable(amount=10),
+)
+ultra_health_potion = Item(
+    char="%",
+    color=(0,160,255),
+    name="Ultra Potion",
+    consumable=consumable.HealingConsumable(amount=18),
 )
 fireball_scroll=Item(
     char="~",
@@ -244,14 +251,14 @@ lesser_staff = Item(
 )
 explosive_staff = Item(
     char="/",
-    color=(140,120,60),
+    color=(160,140,80),
     name="Explosive Staff",
     consumable=consumable.ExplosiveStaff(damage=15,radius=3),
 )
 #end game staff
 end_staff = Item(
     char="/",
-    color=(140,120,60),
+    color=(180,160,100),
     name="Ivelan's Staff of Corruption",
     consumable=consumable.EndStaff(damage=25,radius=3),
 )
@@ -284,13 +291,13 @@ adamantine_sword=Item(
 beam_sword = Item(
     char="/",
     color=(150, 100, 0),
-    name="Adamantine Sword",
+    name="Beam Sword",
     equippable=equippable.BeamSword()
 )
 
 leather_armor = Item(
    char="[",
-   color=(175, 175, 175),
+   color=(150, 90, 0),
    name="Leather Armor",
    equippable=equippable.LeatherArmor(),
 )
@@ -302,7 +309,7 @@ chain_mail = Item(
 )
 knight_armor = Item(
     char="[",
-    color=(175, 175, 175),
+    color=(200, 200, 200),
     name="Knight Armor",
     equippable=equippable.KnightArmor()
 )
@@ -314,7 +321,7 @@ adamantine_armor = Item(
 )
 runic_armor = Item(
     char="[",
-    color=(175, 175, 175),
+    color=(255, 170, 0),
     name="Runic Armor",
     equippable=equippable.RunicArmor()
 )

@@ -7,7 +7,7 @@ import tcod
 import entity_factories
 from game_map import GameMap
 import tile_types
-
+import color
 if TYPE_CHECKING:
     from engine import Engine
     from engine import Entity
@@ -304,42 +304,94 @@ def generate_dungeon(
 
     rooms: List[RectangularRoom] = []
 
+    if engine.game_world.current_floor == 5:
+        engine.message_log.add_message(
+            "You feel a chill in your spine, you sense something sinister below...",
+            color.welcome_text
+        )
+    elif engine.game_world.current_floor == 6:
+        engine.message_log.add_message(
+            "As you descend to the next floor, the walls around you begin to change shape."
+            " Dirt and rock walls become steel. You feel a faint red glow below your feet."
+            " The metal floor pumps with a thick red plasma. You have uncovered a sinister"
+            " realm, hidden from society.",
+            color.welcome_text
+        )
+    elif engine.game_world.current_floor == 10:
+        engine.message_log.add_message(
+            "Entering this floor, you begin to feel violently nauseous. A disgusting evil lays in wait,"
+            " and it stands between you and your freedom.",
+            color.welcome_text
+        )
+
     center_of_last_room = (0,0)
     for r in range(max_rooms):
-        room_width = random.randint(room_min_size, room_max_size)
-        room_height = random.randint(room_min_size, room_max_size)
+        if engine.game_world.current_floor < 6:
+            room_width = random.randint(room_min_size, room_max_size)
+            room_height = random.randint(room_min_size, room_max_size)
 
-        x = random.randint(0, dungeon.width - room_width - 1)
-        y = random.randint(0, dungeon.height - room_height - 1)
+            x = random.randint(0, dungeon.width - room_width - 1)
+            y = random.randint(0, dungeon.height - room_height - 1)
 
-        # RectangularRoom class makes rectangles easier to work with
-        new_room = RectangularRoom(x, y, room_width, room_height)
+            # RectangularRoom class makes rectangles easier to work with
+            new_room = RectangularRoom(x, y, room_width, room_height)
 
-        # Run through the other rooms and see if they intersect
-        if any(new_room.intersects(other_room) for other_room in rooms):
-            continue # room intersects, goto next valid attempt
-        # if there are no interesects, valid room
+            # Run through the other rooms and see if they intersect
+            if any(new_room.intersects(other_room) for other_room in rooms):
+                continue # room intersects, goto next valid attempt
+            # if there are no interesects, valid room
 
-        # dig rooms
-        dungeon.tiles[new_room.inner] = tile_types.floor
+            # dig rooms
+            dungeon.tiles[new_room.inner] = tile_types.floor
 
-        if len(rooms) == 0:
-            # player starting room
-            player.place(*new_room.center, dungeon)
-        else: # all rooms after the first
-            # Dig tunnel between this room and previous room
-            for x, y in tunnel_between(rooms[-1].center, new_room.center):
-                dungeon.tiles[x, y] = tile_types.floor
-            center_of_last_room = new_room.center
-        place_entities(new_room, dungeon, engine.game_world.current_floor)
-        if (engine.game_world.current_floor != 10):
+            if len(rooms) == 0:
+                # player starting room
+                player.place(*new_room.center, dungeon)
+            else: # all rooms after the first
+                # Dig tunnel between this room and previous room
+                for x, y in tunnel_between(rooms[-1].center, new_room.center):
+                    dungeon.tiles[x, y] = tile_types.floor
+                center_of_last_room = new_room.center
+            place_entities(new_room, dungeon, engine.game_world.current_floor)
             dungeon.tiles[center_of_last_room] = tile_types.down_stairs
             dungeon.downstairs_location = center_of_last_room
+            # append new room to list
+            rooms.append(new_room)
         else:
-            dungeon.tiles[center_of_last_room] = tile_types.win_game
-            dungeon.game_win = center_of_last_room
-        # append new room to list
-        rooms.append(new_room)
+            room_width = random.randint(room_min_size, room_max_size)
+            room_height = random.randint(room_min_size, room_max_size)
+
+            x = random.randint(0, dungeon.width - room_width - 1)
+            y = random.randint(0, dungeon.height - room_height - 1)
+
+            # RectangularRoom class makes rectangles easier to work with
+            new_room = RectangularRoom(x, y, room_width, room_height)
+
+            # Run through the other rooms and see if they intersect
+            if any(new_room.intersects(other_room) for other_room in rooms):
+                continue  # room intersects, goto next valid attempt
+            # if there are no interesects, valid room
+
+            # dig rooms
+            dungeon.tiles[new_room.inner] = tile_types.late_floor
+
+            if len(rooms) == 0:
+                # player starting room
+                player.place(*new_room.center, dungeon)
+            else:  # all rooms after the first
+                # Dig tunnel between this room and previous room
+                for x, y in tunnel_between(rooms[-1].center, new_room.center):
+                    dungeon.tiles[x, y] = tile_types.late_floor
+                center_of_last_room = new_room.center
+            place_entities(new_room, dungeon, engine.game_world.current_floor)
+            if (engine.game_world.current_floor != 10):
+                dungeon.tiles[center_of_last_room] = tile_types.late_stairs
+                dungeon.downstairs_location = center_of_last_room
+            else:
+                dungeon.tiles[center_of_last_room] = tile_types.win_game
+                dungeon.game_win = center_of_last_room
+            # append new room to list
+            rooms.append(new_room)
     if (engine.game_world.current_floor == 10):
         entity_factories.monolith.spawn(
             dungeon,

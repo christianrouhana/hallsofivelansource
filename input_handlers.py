@@ -553,7 +553,7 @@ class MainEventHandler(EventHandler):
                                                     f"\nyou begins to disappear... in a moment you realize you are "
                                                     f"\nstanding at the entrance of the forsaken cave. You have done it."
                                                     f"\nYou bested the ultimate suicide mission, reclaiming your innocence"
-                                                    f"\nfor crimes you never committed. You begin the long walk back home,"
+                                                    f"\nagainst crimes you never committed. You begin the long walk back home,"
                                                     f"\nready for a new life. CONGRATULATIONS!")
 
         if key in MOVE_KEYS:

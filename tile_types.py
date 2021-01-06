@@ -34,6 +34,13 @@ def new_tile(
 # SHROUD IS UNEXPLORED && UNSEEN TILES
 SHROUD = np.array((ord(" "), (255, 255, 255), (0, 0, 0)), dtype = graphic_dt)
 
+late_floor = new_tile(
+    walkable = True,
+    transparent=True,
+    dark=(ord("\""), (60,0,0), (15,15,15)),
+    light=(ord("\""), (100, 0, 0), (45, 45, 45)),
+)
+
 floor = new_tile(
     walkable = True,
     transparent=True,
@@ -41,11 +48,25 @@ floor = new_tile(
     light=(ord("."), (230, 100, 25), (50, 20, 0)),
 )
 
+late_wall = new_tile(
+    walkable=False,
+    transparent=False,
+    dark=(ord("0"), (15,15,15), (30,30,30)),
+    light=(ord("0"), (30, 30, 30), (100, 100, 100)),
+)
+
 wall = new_tile(
     walkable=False,
     transparent=False,
     dark=(ord("#"), (60,30,10), (40,17,10)),
     light=(ord("#"), (120, 70, 0), (90, 50, 0)),
+)
+
+late_stairs = new_tile(
+    walkable=True,
+    transparent=True,
+    dark=(ord(">"), (60,0,0), (15,15,15)),
+    light=(ord(">"), (130,0,0), (100,100,100))
 )
 
 down_stairs = new_tile(
@@ -58,6 +79,6 @@ down_stairs = new_tile(
 win_game = new_tile(
     walkable=True,
     transparent=True,
-    dark=(ord("^"), (140,140,0), (0,60,60)),
-    light=(ord("^"), (250,240,0), (0,100,100))
+    dark=(ord("^"), (140,140,0), (60,60,60)),
+    light=(ord("^"), (250,240,0), (150,150,150))
 )

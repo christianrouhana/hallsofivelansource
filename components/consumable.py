@@ -285,7 +285,7 @@ class TimeStopConsumable(Consumable):
 
         for actor in self.engine.game_map.actors:
             if actor.distance(*target_xy) <= self.radius:
-                if (actor.name is not "Player"):
+                if (actor.name != "Player"):
                     self.engine.message_log.add_message(
                         f"The {actor.name} is stuck in the sands of time, for {self.number_of_turns} turns!"
                     )
